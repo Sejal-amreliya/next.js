@@ -22,8 +22,8 @@ export class UserService {
     return this.userRepository.findOne(id);
   }
   async updateUser(id: any, user: User): Promise<User> {
-    console.log('Updating user with id:', id);
-    const existingUser = await this.userRepository.findOne({ where: { id } }); // Find the existing user
+    // Finding the existing user
+    const existingUser = await this.userRepository.findOne({ where: { id } }); 
     if (!existingUser) {
       throw new Error('User not found');
     }
