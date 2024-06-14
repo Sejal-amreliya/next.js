@@ -21,11 +21,22 @@ export class UserService {
   async getUser(id:any): Promise<User> {
     return this.userRepository.findOne(id);
   }
-
   async updateUser(id: any, user: User): Promise<User> {
-    await this.userRepository.update(id, user);
-    return this.userRepository.findOne(id);
+    console.log('Updating user with id:', id);
+    const existingUser = await this.userRepository.findOne({ where: { id } }); // Find the existing user
+    if (!existingUser) {
+      throw new Error('User not found');
+    }
+  
+    // Update the existing user object with the new values
+    Object.assign(existingUser, user);
+  
+    // Save the updated user object
+    await this.userRepository.save(existingUser);
+  
+    return existingUser;
   }
+  
 
   async deleteUser(id: number): Promise<void> {
     await this.userRepository.delete(id);
